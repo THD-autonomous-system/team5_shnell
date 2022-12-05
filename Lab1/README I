@@ -1,1 +1,38 @@
 
+
+Lab 1 consists of Map of Real world and simulation world.
+
+In Real folder we have uploaded map as png file and rivz file. We have created map of our class room. 
+
+In Simulation folder we have uploaded map of virtual house which is created in gazebo and uploaded png file and rviz file.
+
+Steps to create map in Simulation :
+
+1)Go to Docker folder
+2)Run command bash run_docker.sh, which is used to run the docker
+3)open new terminal,run command bash into_docker.sh inside the docker folder then you will enter inside docker container
+4) After entering into the Docker container run the command to create virtual environment in gazebo which is a 3d simulator 
+	4.1)command to create house in gazebo is roslaunch turtlebot3_gazebo turtlebot3_house.launch
+	4.2)command to create world in gazebo is roslaunch turtlebot3_gazebo turtlebot3_world.launch
+ we have created a house environment using 4.1 command 
+5) After that open another terminal and get into docker and run the command to operate turtlebot with our keyboard
+	5.1)command to operate turtlebot with keyboard is roslaunch turtlebot3_teleop turtlebot3_teleop_key.launch
+ after running this you can operate robot with keyboard keys.
+ 6)open new terminal and enter into docker then run below command to launch slam mode
+ 	6.1)roslaunch turtlebot3_slam turtlebot3_slam.launch
+ 7)create map moving inside the house using keyboard keys and save the file.
+ 
+ Steps tp create map in real world:
+
+ 1) Make sure robot & PC are in the same Network 
+ 2) follow 1 to 3 steps from simualtions to enter into docker container
+ 3)Run command gedit ~/.bashrc then a textfile will pop upand at the end add below two lines
+ export ROS_MASTER_URI=http://{IP_ADDRESS_OF_REMOTE_PC}:11311 
+ export ROS_HOSTNAME={IP_ADDRESS_OF_RASPBERRY_PI_3}
+ 4)Write both PC adress and Raspberry pi adress in dedicated places
+ 5)save File and source it by running the following command source ~/.bashrc 
+ 6)open new terminal and run roscore 
+ 7)open new terminal and connect to robot using this command ssh ubuntu@IP adress of Raspberry pi
+ 8)Enter password (turtlebot) for us
+ 9)Run bringup command roslaunch turtlebot3_bringup turtlebot3_robot.launch and  wait until calibration end 
+ 10)follow steps from simulations to run teleoperation command after running that use keys to move robot and procedure to launch slam(follow steps from 5 to 7)
