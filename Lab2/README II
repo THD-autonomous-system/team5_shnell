@@ -1,0 +1,5 @@
+Lab 2 consits of one python script and one image file 
+In python script file we have written a code to take lidar values and plot a graph.
+we have written in two formats one is storing lidar values in list,doing mathematical calculations to find co-ordinates and ploting the graph
+Another way is storing coordinates in a csv file and plotting them and also we have created a mark ">" which indicates turtlebot
+Image file is the graph 
