@@ -6,6 +6,9 @@ from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 from nav_msgs.msg import Odometry
 from tf import transformations
+import numpy as np
+import csv
+import matplotlib.pyplot as plt
 
 import math
 pub_ = None
@@ -24,7 +27,9 @@ state_dict_ = {
     4:'follow the wall',
     
 }
+
 def callback_laser(msg):
+    
     global regions_
     regions_ = {
         'front': min(min(msg.ranges[0:20]),min(msg.ranges[340:360])),
@@ -32,8 +37,14 @@ def callback_laser(msg):
         'right': min(msg.ranges[270:300]),
         'left': min(msg.ranges[70:90]),
     }
-
+    plot_laser(msg.ranges, x, y, theta)
     take_action()
+   
+
+
+
+#def state_robot():
+    
 def change_state(state):
     global d
     if state==1:
@@ -92,6 +103,42 @@ def take_action():
     else:
         state_description = 'unknown case'
         rospy.loginfo(regions)
+
+
+def plot_laser(ranges, x, y, theta):
+    # Clear the current figure
+    plt.clf()
+
+    # Create a subplot
+    ax = plt.subplot()
+
+    # Set the title and labels
+    ax.set_title('Laser scan')
+    ax.set_xlabel('X position (m)')
+    ax.set_ylabel('Y position (m)')
+
+    # Set the limits of the plot
+    ax.set_xlim(-10,10)
+    ax.set_ylim(-10, 10)
+
+    # Plot the robot's position as a point
+    ax.plot(x, y, color='red', marker='o', markersize=12)
+
+    # Plot the ranges as a line plot
+    ax.plot(x + ranges * np.cos(theta + np.radians(range(360))),
+            y + ranges * np.sin(theta + np.radians(range(360))),
+            color='blue', linewidth=1, zorder=1)
+    ax.set_autoscale_on(False)
+ 
+
+    # Draw the plot
+    plt.draw()
+    plt.pause(0.001)
+
+
+
+
+
 def find_wall():
     
     msg = Twist()
@@ -120,18 +167,25 @@ def follow_the_wall():
     msg = Twist()
     msg.linear.x = 0.3
     return msg
+
 def main():
+    global x, y, theta
+
+# Define the variables
+    x = 0
+    y = 0
+    theta = 0
     global pub_
     
     rospy.init_node('reading_laser')
     
     pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
     
-    sub = rospy.Subscriber('/scan', LaserScan, callback_laser)
+    sub = rospy.Subscriber('/scan', LaserScan, callback_laser, queue_size=1)
     
     rate = rospy.Rate(20)
     while not rospy.is_shutdown():
-  
+       
         msg = Twist()
         #print("1")
         if state_ == 0:
