@@ -1,1 +1,13 @@
-In Lab3 we have to upload python script for wall following
+we have one node that subscribes to laser scan data and publishes to a Twist message. It also contains a function called 'callback_laser' which is called 
+when a new laser scan message is received.The function takes the laser scan data and checks the state for the robot to be in. 
+The robot can be in one of five states:
+   1.find the wall
+   2.turn left
+   3.turn right
+   4.back
+   5.follow the wall
+It does this by checking the ranges of the laser scan data in three regions with certain range of angles in the front, left, and right of the robot. Based 
+on the minimum range in these regions, the function decide which state the robot should be in. The function then calls the 'change_state' function to 
+change the state and publish a Twist message to control the robot's movement,after changing state we will maintain some constant distance between wall and 
+robot,so that it won't miss the path.The 'plot_laser' function plots the laser scan data in a polar plot, which is useful for visualizing the data. The 
+'take_action' function determines which action the robot should take based on its current state.
