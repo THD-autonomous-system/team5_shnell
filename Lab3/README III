@@ -1,3 +1,13 @@
+Python script for wall following robot.
+steps:
+1.we need to get values from lidar
+2.finding the nearest wall to robot
+3.Following that wall 
+4.Move robot to different rooms
+5. plot the wall using lidar values
+Description:
+       Below is the description of what we have done to complete above steps
+       
 we have one node that subscribes to laser scan data and publishes to a Twist message. It also contains a function called 'callback_laser' which is called 
 when a new laser scan message is received.The function takes the laser scan data and checks the state for the robot to be in. 
 The robot can be in one of five states:
